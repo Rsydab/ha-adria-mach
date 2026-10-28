@@ -24,7 +24,13 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import AdriaMachConfigEntry
 from .api import AdriaMachError
-from .const import LIGHT_GROUP_DEVICE_MAX, LIGHT_GROUP_KEYS, NOT_SET, value_in_use
+from .const import (
+    LIGHT_GROUP_DEFAULT_NAMES,
+    LIGHT_GROUP_DEVICE_MAX,
+    LIGHT_GROUP_KEYS,
+    NOT_SET,
+    value_in_use,
+)
 from .entity import AdriaMachEntity
 
 _LOGGER = logging.getLogger(__name__)
@@ -56,14 +62,15 @@ async def async_setup_entry(
         if key not in coordinator.data:
             continue
         custom_name = coordinator.user_settings.get(f"{key}_name", "")
+        known_name = LIGHT_GROUP_DEFAULT_NAMES.get(key, "")
         number = key.split("_")[2]
         entities.append(
             AdriaMachGroupLight(
                 coordinator,
                 LightEntityDescription(
                     key=key,
-                    name=custom_name or f"Light group {number}",
-                    entity_registry_enabled_default=bool(custom_name)
+                    name=custom_name or known_name or f"Light group {number}",
+                    entity_registry_enabled_default=bool(custom_name or known_name)
                     or value_in_use(coordinator.data[key]),
                 ),
             )

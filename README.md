@@ -92,7 +92,7 @@ Home Assistant (English and Swedish are included).
 </details>
 
 <details>
-<summary><b>Binary sensors</b> (5)</summary>
+<summary><b>Binary sensors</b> (6)</summary>
 
 | Entity | What it shows |
 |---|---|
@@ -100,7 +100,8 @@ Home Assistant (English and Swedish are included).
 | `binary_sensor.adria_mach_alde_panel` | Alde panel powered |
 | `binary_sensor.adria_mach_heater_running` | Air heater running |
 | `binary_sensor.adria_mach_water_heater_running` | Water heater running |
-| `binary_sensor.adria_mach_water_pump` | Water pump on |
+| `binary_sensor.adria_mach_fridge_door` | Fridge door open |
+| `binary_sensor.adria_mach_firmware_update_available` | The app's update service offers a newer MACH firmware (checked hourly) |
 
 </details>
 
@@ -120,23 +121,44 @@ they are switched on at full.
 </details>
 
 <details>
-<summary><b>Scenes and buttons</b> (one per light scene)</summary>
+<summary><b>Scenes</b> (one per light scene)</summary>
 
 | Entity | Controls |
 |---|---|
 | `scene.adria_mach_<scene name>` | Activate a light scene stored in the MACH, named as in the app (for example `scene.adria_mach_kvall`) |
-| `button.adria_mach_save_scene_<scene name>` | Store the current lights into that scene slot |
 
 Named scenes are enabled; empty slots are created disabled.
 
 </details>
 
 <details>
-<summary><b>Switch</b> (1)</summary>
+<summary><b>Switches</b> (8)</summary>
 
 | Entity | Controls |
 |---|---|
 | `switch.adria_mach_heater` | Alde air heater on/off |
+| `switch.adria_mach_water_pump` | Water pump |
+| `switch.adria_mach_automatic_climate_control` | Alde automatic climate control |
+| `switch.adria_mach_fridge` | Fridge on/off |
+| `switch.adria_mach_fridge_automatic_mode` | Fridge automatic energy selection |
+| `switch.adria_mach_fridge_frame_heater` | Fridge frame heater |
+| `switch.adria_mach_aux_output` | AUX output |
+| `switch.adria_mach_air_conditioning` | Air conditioning on/off |
+
+Settings with more than two values (hot water mode, fridge energy source and cooling level, Alde
+energy priority, air-conditioning mode, fan and temperature) are shown as sensors for now; their
+accepted values have not been observed yet.
+
+</details>
+
+<details>
+<summary><b>Buttons</b></summary>
+
+| Entity | Does |
+|---|---|
+| `button.adria_mach_all_lights_off` | Switch off every light, like the panel's button |
+| `button.adria_mach_calibrate_level` | Store the current position as level (see Levelling) |
+| `button.adria_mach_save_scene_<scene name>` | Store the current lights into that scene slot |
 
 </details>
 

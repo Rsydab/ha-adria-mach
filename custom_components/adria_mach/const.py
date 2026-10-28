@@ -50,6 +50,19 @@ ACCEL_KEYS = ("ACCELERATION_X", "ACCELERATION_Y", "ACCELERATION_Z")
 # User settings are re-read every N polls (names and SSID rarely change)
 SETTINGS_REFRESH_POLLS = 60
 
+# Firmware update check (the app's own update service), once per N polls
+UPDATES_URL = "https://adria-mach-updates.solvesall.com/api/updates/updatesAvailable"
+UPDATES_REFRESH_POLLS = 60
+KEY_FIRMWARE_UPDATE = "FIRMWARE_UPDATE_AVAILABLE"
+KEY_FIRMWARE_UPDATE_INFO = "FIRMWARE_UPDATE_INFO"
+
+# "All lights off" button in the unit; the app sends "press"
+KEY_ALL_LIGHTS_OFF = "LIGHT_SYSTEM_SWITCH_OFF_BUTTON"
+
+# Light group 10 has no name in the app's settings on the vehicle this was
+# built on, but is its outdoor light dimmer.
+LIGHT_GROUP_DEFAULT_NAMES = {"LIGHT_GROUP_10_BRIGHTNESS": "Outdoor lights"}
+
 # 7-day history (getChart) imported into recorder statistics: key, unit, unit class
 HISTORY_SENSORS = (
     ("FRESH_WATER_LEVEL", "%", "unitless"),

@@ -109,8 +109,11 @@
       "water_heater_working": {
         "name": "Varmvatten arbetar"
       },
-      "water_pump": {
-        "name": "Vattenpump"
+      "fridge_door": {
+        "name": "Kylskåpsdörr"
+      },
+      "firmware_update": {
+        "name": "Firmware-uppdatering finns"
       }
     },
     "device_tracker": {
@@ -129,6 +132,27 @@
     "switch": {
       "heater": {
         "name": "Värmare"
+      },
+      "water_pump": {
+        "name": "Vattenpump"
+      },
+      "climate_auto": {
+        "name": "Automatisk klimatstyrning"
+      },
+      "fridge": {
+        "name": "Kylskåp"
+      },
+      "fridge_auto": {
+        "name": "Kylskåp automatik"
+      },
+      "fridge_frame_heater": {
+        "name": "Kylskåp ramvärmare"
+      },
+      "aux": {
+        "name": "AUX-utgång"
+      },
+      "air_condition": {
+        "name": "Luftkonditionering"
       }
     },
     "number": {
@@ -139,6 +163,9 @@
     "button": {
       "calibrate_level": {
         "name": "Kalibrera plant"
+      },
+      "all_lights_off": {
+        "name": "Släck alla lampor"
       }
     }
   },

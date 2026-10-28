@@ -15,11 +15,14 @@ from .const import (
     CONF_LEVEL_REFERENCE,
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
+    KEY_FIRMWARE_UPDATE,
+    KEY_FIRMWARE_UPDATE_INFO,
     KEY_NOTIFICATION_COUNT,
     KEY_TILT_FRONT_BACK,
     KEY_TILT_SIDE,
     KEY_WIFI_SSID,
     SETTINGS_REFRESH_POLLS,
+    UPDATES_REFRESH_POLLS,
 )
 from .levelling import accel_vector, tilt_angles
 
@@ -47,6 +50,7 @@ class AdriaMachCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.mach_info: dict[str, Any] = {}
         self.user_settings: dict[str, str] = {}
         self._polls = 0
+        self._updates: list[dict[str, Any]] | None = None
 
     async def _async_update_data(self) -> dict[str, Any]:
         try:
@@ -68,6 +72,14 @@ class AdriaMachCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             _LOGGER.debug("Notification count unavailable: %s", err)
         if ssid := self.user_settings.get("wifiSsid"):
             data[KEY_WIFI_SSID] = ssid
+        if self._updates is None or self._polls % UPDATES_REFRESH_POLLS == 0:
+            try:
+                self._updates = await self.api.async_get_updates_available(self.mach_info)
+            except AdriaMachError as err:
+                _LOGGER.debug("Firmware update check unavailable: %s", err)
+        if self._updates is not None:
+            data[KEY_FIRMWARE_UPDATE] = bool(self._updates)
+            data[KEY_FIRMWARE_UPDATE_INFO] = self._updates[0] if self._updates else {}
 
         # Levelling from the unit's accelerometer, relative to the stored reference.
         if (acc := accel_vector(data)) is not None:

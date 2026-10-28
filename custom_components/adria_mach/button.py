@@ -13,7 +13,7 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import AdriaMachConfigEntry
-from .const import CONF_LEVEL_REFERENCE, SCENE_KEYS
+from .const import CONF_LEVEL_REFERENCE, KEY_ALL_LIGHTS_OFF, SCENE_KEYS
 from .entity import AdriaMachEntity
 from .levelling import accel_vector
 from .scene import scene_name
@@ -23,6 +23,12 @@ CALIBRATE = ButtonEntityDescription(
     translation_key="calibrate_level",
     icon="mdi:axis-z-rotate-clockwise",
     entity_category=EntityCategory.CONFIG,
+)
+
+ALL_LIGHTS_OFF = ButtonEntityDescription(
+    key=KEY_ALL_LIGHTS_OFF,
+    translation_key="all_lights_off",
+    icon="mdi:lightbulb-group-off",
 )
 
 
@@ -51,7 +57,19 @@ async def async_setup_entry(
         )
     if accel_vector(coordinator.data) is not None:
         entities.append(AdriaMachCalibrateButton(coordinator, CALIBRATE))
+    if KEY_ALL_LIGHTS_OFF in coordinator.data:
+        entities.append(AdriaMachPressButton(coordinator, ALL_LIGHTS_OFF))
     async_add_entities(entities)
+
+
+class AdriaMachPressButton(AdriaMachEntity, ButtonEntity):
+    """A button in the unit; the app sends 'press'."""
+
+    async def async_press(self) -> None:
+        ok = await self.coordinator.api.async_set_value(self.entity_description.key, "press")
+        if not ok:
+            raise HomeAssistantError(f"MACH did not accept {self.name}")
+        await self.coordinator.async_request_refresh()
 
 
 class AdriaMachSaveSceneButton(AdriaMachEntity, ButtonEntity):

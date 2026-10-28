@@ -14,7 +14,7 @@ from typing import Any
 
 import aiohttp
 
-from .const import BASE_URL, NOT_SET, TOKEN_MARGIN, USER_AGENT
+from .const import BASE_URL, NOT_SET, TOKEN_MARGIN, UPDATES_URL, USER_AGENT
 
 
 class AdriaMachError(Exception):
@@ -46,10 +46,11 @@ class AdriaMachApi:
         self._token: str | None = None
         self._token_expires: float = 0.0
 
-    async def _post(self, path: str, body: dict[str, Any]) -> dict[str, Any]:
+    async def _post(self, path: str, body: dict[str, Any]) -> Any:
+        url = path if path.startswith("http") else BASE_URL + path
         try:
             async with self._session.post(
-                BASE_URL + path,
+                url,
                 json=body,
                 headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
                 timeout=aiohttp.ClientTimeout(total=30),
@@ -61,9 +62,21 @@ class AdriaMachApi:
                 data = await resp.json(content_type=None)
         except aiohttp.ClientError as err:
             raise AdriaMachConnectionError(str(err)) from err
-        if not isinstance(data, dict):
+        if not isinstance(data, (dict, list)):
             raise AdriaMachConnectionError(f"Unexpected response on {path}")
         return data
+
+    async def async_get_updates_available(self, mach_info: dict[str, Any]) -> list[dict[str, Any]]:
+        """Firmware updates the app's update service offers for this unit (often empty)."""
+        data = await self._post(
+            UPDATES_URL,
+            {
+                "releaseType": mach_info.get("releaseType", ""),
+                "machId": self.mach_id,
+                "version": mach_info.get("version", ""),
+            },
+        )
+        return [item for item in data if isinstance(item, dict)] if isinstance(data, list) else []
 
     async def async_authenticate(self) -> None:
         """Log in and cache the token."""
@@ -71,7 +84,7 @@ class AdriaMachApi:
             "/v0/client/api/auth",
             {"username": self._username, "password": self._password},
         )
-        token = data.get("token")
+        token = data.get("token") if isinstance(data, dict) else None
         if not token:
             raise AdriaMachAuthError("No token in auth response")
         duration_s = int(data.get("durationMSec", 0)) / 1000
@@ -97,7 +110,7 @@ class AdriaMachApi:
                 "auth": {"username": self._username, "password": self._password},
             },
         )
-        devices = data.get("devices") or {}
+        devices = (data.get("devices") or {}) if isinstance(data, dict) else {}
         found: list[dict[str, str]] = []
         for bucket in ("add", "update"):
             for dev in devices.get(bucket) or []:
@@ -127,6 +140,8 @@ class AdriaMachApi:
             },
         }
         data = await self._post("/v0/client/api/all", body)
+        if not isinstance(data, dict):
+            raise AdriaMachConnectionError(f"Unexpected RPC response for {rtype}/{method}")
         status = data.get("status")
         if status != 200:
             if _retry:

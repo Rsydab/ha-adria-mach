@@ -109,8 +109,11 @@
       "water_heater_working": {
         "name": "Water heater running"
       },
-      "water_pump": {
-        "name": "Water pump"
+      "fridge_door": {
+        "name": "Fridge door"
+      },
+      "firmware_update": {
+        "name": "Firmware update available"
       }
     },
     "device_tracker": {
@@ -129,6 +132,27 @@
     "switch": {
       "heater": {
         "name": "Heater"
+      },
+      "water_pump": {
+        "name": "Water pump"
+      },
+      "climate_auto": {
+        "name": "Automatic climate control"
+      },
+      "fridge": {
+        "name": "Fridge"
+      },
+      "fridge_auto": {
+        "name": "Fridge automatic mode"
+      },
+      "fridge_frame_heater": {
+        "name": "Fridge frame heater"
+      },
+      "aux": {
+        "name": "AUX output"
+      },
+      "air_condition": {
+        "name": "Air conditioning"
       }
     },
     "number": {
@@ -139,6 +163,9 @@
     "button": {
       "calibrate_level": {
         "name": "Calibrate level"
+      },
+      "all_lights_off": {
+        "name": "All lights off"
       }
     }
   },

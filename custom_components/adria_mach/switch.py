@@ -1,4 +1,4 @@
-"""Switch platform for Adria MACH (heater on/off)."""
+"""Switch platform for Adria MACH: everything the unit exposes as plain on/off."""
 
 from __future__ import annotations
 
@@ -22,6 +22,48 @@ SWITCHES: tuple[SwitchEntityDescription, ...] = (
         device_class=SwitchDeviceClass.SWITCH,
         icon="mdi:radiator",
     ),
+    SwitchEntityDescription(
+        key="WATER_PUMP_VALUE",
+        translation_key="water_pump",
+        device_class=SwitchDeviceClass.SWITCH,
+        icon="mdi:water-pump",
+    ),
+    SwitchEntityDescription(
+        key="AUTOMATIC_CLIMATE_CONTROL_SETTING",
+        translation_key="climate_auto",
+        device_class=SwitchDeviceClass.SWITCH,
+        icon="mdi:thermostat-auto",
+    ),
+    SwitchEntityDescription(
+        key="FRIDGE_VALUE",
+        translation_key="fridge",
+        device_class=SwitchDeviceClass.SWITCH,
+        icon="mdi:fridge",
+    ),
+    SwitchEntityDescription(
+        key="FRIDGE_AUTOMATIC_MODE",
+        translation_key="fridge_auto",
+        device_class=SwitchDeviceClass.SWITCH,
+        icon="mdi:fridge-outline",
+    ),
+    SwitchEntityDescription(
+        key="FRIDGE_FRAME_HEATER_VALUE",
+        translation_key="fridge_frame_heater",
+        device_class=SwitchDeviceClass.SWITCH,
+        icon="mdi:fridge-alert",
+    ),
+    SwitchEntityDescription(
+        key="AUX_VALUE",
+        translation_key="aux",
+        device_class=SwitchDeviceClass.OUTLET,
+        icon="mdi:power-socket-eu",
+    ),
+    SwitchEntityDescription(
+        key="AIR_CONDITION_VALUE",
+        translation_key="air_condition",
+        device_class=SwitchDeviceClass.SWITCH,
+        icon="mdi:air-conditioner",
+    ),
 )
 
 
@@ -31,7 +73,9 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator = entry.runtime_data
-    async_add_entities(AdriaMachSwitch(coordinator, d) for d in SWITCHES)
+    async_add_entities(
+        AdriaMachSwitch(coordinator, d) for d in SWITCHES if d.key in coordinator.data
+    )
 
 
 class AdriaMachSwitch(AdriaMachEntity, SwitchEntity):
