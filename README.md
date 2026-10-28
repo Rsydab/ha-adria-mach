@@ -19,6 +19,20 @@ Mobil* app, so it works wherever the vehicle has LTE coverage, with no extra har
 > **Note:** This is a community project. It is not affiliated with Adria Mobil or Solvesall, and it uses
 > the app's cloud endpoints, which are not publicly documented. It can stop working if they change.
 
+## What it looks like
+
+An example dashboard built only from this integration's entities (the config is in
+[`docs/dashboard.json`](docs/dashboard.json), ready to paste into a new dashboard's raw configuration editor):
+
+![Adria MACH dashboard on desktop](docs/dashboard-desktop.png)
+
+<details>
+<summary>The same dashboard on a phone</summary>
+
+![Adria MACH dashboard on a phone](docs/dashboard-mobile.png)
+
+</details>
+
 ## Installation instructions
 
 Requires a MACH **PLUS** system (the one with LTE and remote access) and a MACH account that already

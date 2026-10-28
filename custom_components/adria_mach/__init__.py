@@ -12,7 +12,13 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import AdriaMachApi
-from .const import CONF_MACH_ID, DEFAULT_SCAN_INTERVAL, is_variant, value_in_use
+from .const import (
+    CONF_MACH_ID,
+    DEFAULT_SCAN_INTERVAL,
+    LIGHT_GROUP_DEFAULT_NAMES,
+    is_variant,
+    value_in_use,
+)
 from .coordinator import AdriaMachCoordinator
 from .history import async_import_history
 
@@ -74,7 +80,12 @@ def _async_enable_values_now_in_use(
         if reg_entry.disabled_by is not er.RegistryEntryDisabler.INTEGRATION:
             continue
         key = reg_entry.unique_id.removeprefix(prefix)
-        if is_variant(key) or not value_in_use(coordinator.data.get(key)):
+        if is_variant(key):
+            continue
+        named = key in LIGHT_GROUP_DEFAULT_NAMES or bool(
+            coordinator.user_settings.get(f"{key}_name")
+        )
+        if not named and not value_in_use(coordinator.data.get(key)):
             continue
         registry.async_update_entity(reg_entry.entity_id, disabled_by=None)
         enabled += 1

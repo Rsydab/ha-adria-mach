@@ -1,0 +1,159 @@
+{
+  "views": [
+    {
+      "title": "Overview",
+      "path": "overview",
+      "icon": "mdi:caravan",
+      "type": "sections",
+      "max_columns": 3,
+      "sections": [
+        {
+          "type": "grid",
+          "cards": [
+            {"type": "heading", "heading": "Vehicle", "icon": "mdi:caravan", "badges": [
+              {"type": "entity", "entity": "binary_sensor.adria_mach_mains_supply", "show_state": true, "show_icon": true},
+              {"type": "entity", "entity": "sensor.adria_mach_energy_source", "show_state": true}
+            ]},
+            {"type": "tile", "entity": "sensor.adria_mach_inside_temperature", "name": "Inside", "features": [{"type": "trend-graph", "hours_to_show": 24}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_outside_temperature", "name": "Outside", "features": [{"type": "trend-graph", "hours_to_show": 24}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_outside_humidity", "name": "Humidity", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_air_pressure", "name": "Air pressure", "grid_options": {"columns": 6}}
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {"type": "heading", "heading": "Tanks and gas", "icon": "mdi:water"},
+            {"type": "gauge", "entity": "sensor.adria_mach_fresh_water", "name": "Fresh water", "min": 0, "max": 100, "needle": true, "severity": {"green": 40, "yellow": 20, "red": 0}, "grid_options": {"columns": 6, "rows": 4}},
+            {"type": "gauge", "entity": "sensor.adria_mach_waste_water", "name": "Waste water", "min": 0, "max": 100, "needle": true, "severity": {"green": 0, "yellow": 60, "red": 85}, "grid_options": {"columns": 6, "rows": 4}},
+            {"type": "gauge", "entity": "sensor.adria_mach_gas_bottle_1", "name": "Gas bottle 1", "min": 0, "max": 100, "needle": true, "severity": {"green": 30, "yellow": 15, "red": 0}, "grid_options": {"columns": 6, "rows": 4}},
+            {"type": "gauge", "entity": "sensor.adria_mach_gas_bottle_2", "name": "Gas bottle 2", "min": 0, "max": 100, "needle": true, "severity": {"green": 30, "yellow": 15, "red": 0}, "grid_options": {"columns": 6, "rows": 4}},
+            {"type": "tile", "entity": "sensor.adria_mach_gas_sensor_status", "name": "Gas sensor", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_gas_sensor_battery", "name": "Gas sensor battery", "grid_options": {"columns": 6}}
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {"type": "heading", "heading": "Power", "icon": "mdi:battery-charging"},
+            {"type": "tile", "entity": "sensor.adria_mach_leisure_battery", "name": "Leisure battery", "features": [{"type": "bar-gauge", "min": 0, "max": 100}], "grid_options": {"columns": 12}},
+            {"type": "tile", "entity": "sensor.adria_mach_leisure_battery_voltage", "name": "Voltage", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_leisure_battery_current", "name": "Current", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "binary_sensor.adria_mach_mains_supply", "name": "Mains supply", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "binary_sensor.adria_mach_alde_panel", "name": "Alde panel", "grid_options": {"columns": 6}}
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {"type": "heading", "heading": "Heating", "icon": "mdi:radiator"},
+            {"type": "tile", "entity": "switch.adria_mach_heater", "name": "Alde heater", "features": [{"type": "toggle"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "switch.adria_mach_automatic_climate_control", "name": "Automatic climate", "features": [{"type": "toggle"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "number.adria_mach_heater_setpoint", "name": "Setpoint", "features": [{"type": "numeric-input", "style": "slider"}], "grid_options": {"columns": 12}},
+            {"type": "tile", "entity": "binary_sensor.adria_mach_heater_running", "name": "Heater running", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "binary_sensor.adria_mach_water_heater_running", "name": "Hot water running", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_heater_notification", "name": "Heater notification", "grid_options": {"columns": 12}}
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {"type": "heading", "heading": "Lights", "icon": "mdi:lightbulb-group", "badges": [
+              {"type": "button", "icon": "mdi:lightbulb-group-off", "tap_action": {"action": "perform-action", "perform_action": "button.press", "target": {"entity_id": "button.adria_mach_all_lights_off"}}}
+            ]},
+            {"type": "tile", "entity": "light.adria_mach_internal_lights", "name": "All internal lights", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "light.adria_mach_external_lights", "name": "External lights", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "light.adria_mach_takspots_kok", "name": "Takspots kök", "features": [{"type": "light-brightness"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "light.adria_mach_ledlister_kok", "name": "Ledlister kök", "features": [{"type": "light-brightness"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "light.adria_mach_golvlist_kok", "name": "Golvlist kök", "features": [{"type": "light-brightness"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "light.adria_mach_takspots_sovrum", "name": "Takspots sovrum", "features": [{"type": "light-brightness"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "light.adria_mach_ledlist_sovrum", "name": "Ledlist sovrum", "features": [{"type": "light-brightness"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "light.adria_mach_golvlist_sovrum", "name": "Golvlist sovrum", "features": [{"type": "light-brightness"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "light.adria_mach_takspots_barndel", "name": "Takspots barndel", "features": [{"type": "light-brightness"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "light.adria_mach_light_group_10", "name": "Outdoor lights", "features": [{"type": "light-brightness"}], "grid_options": {"columns": 6}},
+            {"type": "heading", "heading": "Scenes", "heading_style": "subtitle", "icon": "mdi:palette"},
+            {"type": "tile", "entity": "scene.adria_mach_kvall", "name": "Kväll", "hide_state": true, "tap_action": {"action": "perform-action", "perform_action": "scene.turn_on", "target": {"entity_id": "scene.adria_mach_kvall"}}, "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "scene.adria_mach_50", "name": "50 %", "hide_state": true, "tap_action": {"action": "perform-action", "perform_action": "scene.turn_on", "target": {"entity_id": "scene.adria_mach_50"}}, "grid_options": {"columns": 6}}
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {"type": "heading", "heading": "Fridge, water and more", "icon": "mdi:fridge"},
+            {"type": "tile", "entity": "switch.adria_mach_fridge", "name": "Fridge", "features": [{"type": "toggle"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "switch.adria_mach_fridge_automatic_mode", "name": "Fridge automatic", "features": [{"type": "toggle"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "switch.adria_mach_fridge_frame_heater", "name": "Frame heater", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "binary_sensor.adria_mach_fridge_door", "name": "Fridge door", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "switch.adria_mach_water_pump", "name": "Water pump", "features": [{"type": "toggle"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "switch.adria_mach_aux_output", "name": "AUX", "features": [{"type": "toggle"}], "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "switch.adria_mach_air_conditioning", "name": "Air conditioning", "features": [{"type": "toggle"}], "grid_options": {"columns": 12}}
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {"type": "heading", "heading": "Levelling", "icon": "mdi:spirit-level"},
+            {"type": "tile", "entity": "sensor.adria_mach_tilt_front_back", "name": "Front / back", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_tilt_side", "name": "Side", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "button.adria_mach_calibrate_level", "name": "Calibrate level", "hide_state": true, "grid_options": {"columns": 12}}
+          ]
+        },
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {"type": "heading", "heading": "History", "icon": "mdi:chart-line"},
+            {"type": "history-graph", "title": "Temperature, 48 h", "hours_to_show": 48, "entities": [
+              {"entity": "sensor.adria_mach_inside_temperature", "name": "Inside", "color": "#e67e22"},
+              {"entity": "sensor.adria_mach_outside_temperature", "name": "Outside", "color": "#3498db"}
+            ], "grid_options": {"columns": "full", "rows": 5}},
+            {"type": "statistics-graph", "title": "Tanks and battery, 7 days", "days_to_show": 7, "period": "hour", "stat_types": ["mean"], "chart_type": "line", "entities": [
+              {"entity": "sensor.adria_mach_fresh_water", "name": "Fresh water", "color": "#2ecc71"},
+              {"entity": "sensor.adria_mach_waste_water", "name": "Waste water", "color": "#95a5a6"},
+              {"entity": "sensor.adria_mach_leisure_battery", "name": "Battery", "color": "#f1c40f"}
+            ], "grid_options": {"columns": "full", "rows": 6}}
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {"type": "heading", "heading": "Diagnostics", "icon": "mdi:information-outline"},
+            {"type": "tile", "entity": "sensor.adria_mach_lte_signal", "name": "LTE signal", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_lte_operator_name", "name": "Operator", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_notifications", "name": "Notifications", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_unit_temperature", "name": "Unit temperature", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_firmware", "name": "Firmware", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "binary_sensor.adria_mach_firmware_update_available", "name": "Update available", "grid_options": {"columns": 6}}
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Position",
+      "path": "position",
+      "icon": "mdi:map-marker",
+      "type": "sections",
+      "max_columns": 2,
+      "sections": [
+        {
+          "type": "grid",
+          "column_span": 2,
+          "cards": [
+            {"type": "heading", "heading": "Where the vehicle is", "icon": "mdi:map-marker"},
+            {"type": "map", "entities": [{"entity": "device_tracker.adria_mach_position"}], "default_zoom": 11, "grid_options": {"columns": "full", "rows": 8}}
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {"type": "heading", "heading": "GPS", "icon": "mdi:satellite-variant"},
+            {"type": "tile", "entity": "sensor.adria_mach_gps_altitude", "name": "Altitude", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_gps_velocity", "name": "Speed", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "sensor.adria_mach_gps_visible_satellites", "name": "Satellites", "grid_options": {"columns": 6}},
+            {"type": "tile", "entity": "device_tracker.adria_mach_position", "name": "Position", "grid_options": {"columns": 6}}
+          ]
+        }
+      ]
+    }
+  ]
+}
