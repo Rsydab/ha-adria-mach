@@ -8,11 +8,20 @@ Control (lights, Alde heater) is planned once a first command has been verified.
 
 ## Install
 
-1. Copy `custom_components/adria_mach` into your Home Assistant `config/custom_components/`.
-2. Restart Home Assistant.
-3. Settings → Devices & services → Add integration → **Adria MACH**.
-4. Enter your MACH account email, password and the unit id
-   (the app shows it as "Establishing LTE connection to XXXXXXXXXXXX").
+### HACS (recommended)
+
+1. HACS → three-dot menu → **Custom repositories** → add `https://github.com/Rsydab/ha-adria-mach`, category **Integration**.
+2. Search for **Adria MACH** in HACS and download it.
+3. Restart Home Assistant.
+
+### Manual
+
+Copy `custom_components/adria_mach` into your Home Assistant `config/custom_components/` and restart.
+
+### Configure
+
+Settings → Devices & services → Add integration → **Adria MACH**. Enter your MACH account
+email, password and the unit id (the app shows it as "Establishing LTE connection to XXXXXXXXXXXX").
 
 Polls the cloud every 60 seconds. The token lives 2 hours and is renewed automatically.
 

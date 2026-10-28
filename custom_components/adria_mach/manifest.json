@@ -1,7 +1,7 @@
 {
   "domain": "adria_mach",
   "name": "Adria MACH",
-  "codeowners": [],
+  "codeowners": ["@Rsydab"],
   "config_flow": true,
   "documentation": "https://github.com/Rsydab/ha-adria-mach",
   "issue_tracker": "https://github.com/Rsydab/ha-adria-mach/issues",
