@@ -5,3 +5,6 @@ last_values.json
 # Python
 __pycache__/
 *.pyc
+
+# Local clones (e.g. a fork of hacs/default) must never be committed
+default/
