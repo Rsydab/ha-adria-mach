@@ -14,6 +14,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .api import AdriaMachApi
 from .const import (
     CONF_MACH_ID,
+    CONF_ONOFF_LIGHT_GROUPS,
     DEFAULT_SCAN_INTERVAL,
     LIGHT_GROUP_DEFAULT_NAMES,
     is_variant,
@@ -52,6 +53,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: AdriaMachConfigEntry) ->
     )
     coordinator = AdriaMachCoordinator(hass, entry, api, _scan_interval(entry))
     await coordinator.async_config_entry_first_refresh()
+    coordinator.onoff_groups = list(entry.options.get(CONF_ONOFF_LIGHT_GROUPS, []))
     entry.runtime_data = coordinator
 
     _async_enable_values_now_in_use(hass, entry, coordinator)
@@ -94,9 +96,16 @@ def _async_enable_values_now_in_use(
 
 
 async def _async_options_updated(hass: HomeAssistant, entry: AdriaMachConfigEntry) -> None:
-    """Apply changed options (poll interval, level reference) without reloading."""
-    entry.runtime_data.update_interval = timedelta(seconds=_scan_interval(entry))
-    await entry.runtime_data.async_request_refresh()
+    """Apply changed options. Poll interval and level reference apply in place;
+    a changed on/off light-group list needs the light entities rebuilt."""
+    coordinator = entry.runtime_data
+    coordinator.update_interval = timedelta(seconds=_scan_interval(entry))
+    onoff_groups = list(entry.options.get(CONF_ONOFF_LIGHT_GROUPS, []))
+    if onoff_groups != getattr(coordinator, "onoff_groups", []):
+        coordinator.onoff_groups = onoff_groups
+        hass.config_entries.async_schedule_reload(entry.entry_id)
+        return
+    await coordinator.async_request_refresh()
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: AdriaMachConfigEntry) -> bool:

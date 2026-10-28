@@ -174,8 +174,10 @@
       "init": {
         "title": "Alternativ för Adria MACH",
         "data": {
-          "scan_interval": "Uppdateringsintervall (sekunder)"
-        }
+          "scan_interval": "Uppdateringsintervall (sekunder)",
+          "onoff_light_groups": "Ljusgrupper som bara är av/på"
+        },
+        "description": "Grupper som inte går att dimma upptäcks automatiskt första gången man försöker. Du kan också välja dem här."
       }
     }
   }

@@ -129,8 +129,10 @@ Home Assistant (English and Swedish are included).
 | `light.adria_mach_<group name>` | One light group, on/off and brightness 0–100 %, named as in the app (for example `light.adria_mach_ledlister_kok`). Groups you have named are enabled; unnamed groups are enabled when they report a level. |
 
 The unit does not report a group's level while it is on, so group lights show the last state
-Home Assistant commanded (assumed state). Groups that are on/off only in the app reject levels;
-they are switched on at full.
+Home Assistant commanded (assumed state). Some groups (spotlights, typically) are on/off only: the
+unit rejects every level except full. The first time you try to dim such a group it is switched on at
+full, remembered, and from then on shown as an on/off light without a slider. You can also pick
+those groups yourself with the gear icon on the integration.
 
 </details>
 
@@ -254,11 +256,12 @@ same. Check the sensor's battery and placement.
 
 ### How do the light groups work?
 
-Each light group is a light entity with brightness, named as you named it in the app. Behind the
-scenes 0–100 % becomes 1–50 on the unit, and off is a separate command, exactly as the app does it.
-The unit does not report a group's level while it is on, so Home Assistant shows the last state it
-sent. A group that is on/off only in the app rejects levels and is switched on at full. Scenes stored
-in the MACH are scene entities, with a button each to overwrite the scene with the current lights.
+Each light group is a light entity named as you named it in the app. Behind the scenes 0–100 %
+becomes 1–50 on the unit, and off is a separate command, exactly as the app does it. The unit does
+not report a group's level while it is on, so Home Assistant shows the last state it sent. Groups
+that are on/off only (they reject every level but full) are detected the first time you dim them and
+become on/off lights; you can also list them under the integration's options. Scenes stored in the
+MACH are scene entities, with a button each to overwrite the scene with the current lights.
 
 ### What is the heater setpoint range?
 

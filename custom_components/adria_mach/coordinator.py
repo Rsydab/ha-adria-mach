@@ -15,6 +15,7 @@ from .const import (
     CONF_LEVEL_REFERENCE,
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
+    LIGHT_GROUP_DEFAULT_NAMES,
     KEY_FIRMWARE_UPDATE,
     KEY_FIRMWARE_UPDATE_INFO,
     KEY_NOTIFICATION_COUNT,
@@ -49,8 +50,16 @@ class AdriaMachCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.api = api
         self.mach_info: dict[str, Any] = {}
         self.user_settings: dict[str, str] = {}
+        self.onoff_groups: list[str] = []
         self._polls = 0
         self._updates: list[dict[str, Any]] | None = None
+
+    def light_group_name(self, key: str) -> tuple[str, bool]:
+        """(display name, whether it is a real name rather than a generic one)."""
+        custom = self.user_settings.get(f"{key}_name", "")
+        known = LIGHT_GROUP_DEFAULT_NAMES.get(key, "")
+        number = key.split("_")[2]
+        return (custom or known or f"Light group {number}", bool(custom or known))
 
     async def _async_update_data(self) -> dict[str, Any]:
         try:

@@ -174,8 +174,10 @@
       "init": {
         "title": "Adria MACH options",
         "data": {
-          "scan_interval": "Update interval (seconds)"
-        }
+          "scan_interval": "Update interval (seconds)",
+          "onoff_light_groups": "Light groups that are on/off only"
+        },
+        "description": "Groups that reject dimming are detected automatically the first time you try. You can also pick them here."
       }
     }
   }

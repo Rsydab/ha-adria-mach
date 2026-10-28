@@ -26,8 +26,10 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .api import AdriaMachApi, AdriaMachAuthError, AdriaMachConnectionError
 from .const import (
     CONF_MACH_ID,
+    CONF_ONOFF_LIGHT_GROUPS,
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
+    LIGHT_GROUP_KEYS,
     SCAN_INTERVAL_MAX,
     SCAN_INTERVAL_MIN,
 )
@@ -117,20 +119,33 @@ class AdriaMachConfigFlow(ConfigFlow, domain=DOMAIN):
 
 
 class AdriaMachOptionsFlow(OptionsFlow):
-    """Poll interval."""
+    """Poll interval and which light groups are on/off only."""
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         if user_input is not None:
             return self.async_create_entry(
-                data={CONF_SCAN_INTERVAL: int(user_input[CONF_SCAN_INTERVAL])}
+                data={
+                    **self.config_entry.options,
+                    CONF_SCAN_INTERVAL: int(user_input[CONF_SCAN_INTERVAL]),
+                    CONF_ONOFF_LIGHT_GROUPS: list(user_input.get(CONF_ONOFF_LIGHT_GROUPS, [])),
+                }
             )
 
-        current = self.config_entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+        options = self.config_entry.options
+        coordinator = getattr(self.config_entry, "runtime_data", None)
+        group_choices = [
+            selector.SelectOptionDict(value=key, label=coordinator.light_group_name(key)[0])
+            for key in LIGHT_GROUP_KEYS
+            if coordinator is not None and key in (coordinator.data or {})
+        ]
         schema = vol.Schema(
             {
-                vol.Required(CONF_SCAN_INTERVAL, default=current): selector.NumberSelector(
+                vol.Required(
+                    CONF_SCAN_INTERVAL,
+                    default=options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
+                ): selector.NumberSelector(
                     selector.NumberSelectorConfig(
                         min=SCAN_INTERVAL_MIN,
                         max=SCAN_INTERVAL_MAX,
@@ -138,7 +153,17 @@ class AdriaMachOptionsFlow(OptionsFlow):
                         unit_of_measurement="s",
                         mode=selector.NumberSelectorMode.BOX,
                     )
-                )
+                ),
+                vol.Optional(
+                    CONF_ONOFF_LIGHT_GROUPS,
+                    default=list(options.get(CONF_ONOFF_LIGHT_GROUPS, [])),
+                ): selector.SelectSelector(
+                    selector.SelectSelectorConfig(
+                        options=group_choices,
+                        multiple=True,
+                        mode=selector.SelectSelectorMode.LIST,
+                    )
+                ),
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)
