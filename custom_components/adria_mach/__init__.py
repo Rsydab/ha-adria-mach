@@ -15,6 +15,9 @@ PLATFORMS: list[Platform] = [
     Platform.SENSOR,
     Platform.BINARY_SENSOR,
     Platform.DEVICE_TRACKER,
+    Platform.LIGHT,
+    Platform.SWITCH,
+    Platform.NUMBER,
 ]
 
 type AdriaMachConfigEntry = ConfigEntry[AdriaMachCoordinator]

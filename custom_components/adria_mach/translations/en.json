@@ -35,7 +35,6 @@
       "battery_soc": { "name": "Leisure battery" },
       "battery_voltage": { "name": "Leisure battery voltage" },
       "battery_current": { "name": "Leisure battery current" },
-      "heater_setpoint": { "name": "Heater setpoint" },
       "energy_source": { "name": "Energy source" },
       "heater_notification": { "name": "Heater notification" },
       "lte_signal": { "name": "LTE signal" },
@@ -45,15 +44,22 @@
     "binary_sensor": {
       "mains_supply": { "name": "Mains supply" },
       "alde_panel": { "name": "Alde panel" },
-      "heater_on": { "name": "Heater" },
       "heater_working": { "name": "Heater running" },
       "water_heater_working": { "name": "Water heater running" },
-      "internal_light": { "name": "Internal lights" },
-      "external_light": { "name": "External lights" },
       "water_pump": { "name": "Water pump" }
     },
     "device_tracker": {
       "position": { "name": "Position" }
+    },
+    "light": {
+      "internal_lights": { "name": "Internal lights" },
+      "external_lights": { "name": "External lights" }
+    },
+    "switch": {
+      "heater": { "name": "Heater" }
+    },
+    "number": {
+      "heater_setpoint": { "name": "Heater setpoint" }
     }
   }
 }

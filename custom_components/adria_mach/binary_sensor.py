@@ -25,11 +25,6 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
         device_class=BinarySensorDeviceClass.POWER,
     ),
     BinarySensorEntityDescription(
-        key="AIR_HEATER_VALUE",
-        translation_key="heater_on",
-        device_class=BinarySensorDeviceClass.HEAT,
-    ),
-    BinarySensorEntityDescription(
         key="AIR_HEATER_WORKING",
         translation_key="heater_working",
         device_class=BinarySensorDeviceClass.RUNNING,
@@ -38,16 +33,6 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
         key="WATER_HEATER_WORKING",
         translation_key="water_heater_working",
         device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    BinarySensorEntityDescription(
-        key="INTERNAL_LIGHT_VALUE",
-        translation_key="internal_light",
-        device_class=BinarySensorDeviceClass.LIGHT,
-    ),
-    BinarySensorEntityDescription(
-        key="EXTERNAL_LIGHT_VALUE",
-        translation_key="external_light",
-        device_class=BinarySensorDeviceClass.LIGHT,
     ),
     BinarySensorEntityDescription(
         key="WATER_PUMP_VALUE",

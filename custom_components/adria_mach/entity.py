@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+from typing import Any
+
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
+from .api import AdriaMachError
 from .const import DOMAIN
 from .coordinator import AdriaMachCoordinator
 
@@ -40,3 +44,17 @@ class AdriaMachEntity(CoordinatorEntity[AdriaMachCoordinator]):
             and self.coordinator.data is not None
             and self.entity_description.key in self.coordinator.data
         )
+
+    async def _async_set_value(self, value: Any) -> None:
+        """Write one value to the unit, update state optimistically, then refresh."""
+        key = self.entity_description.key
+        try:
+            ok = await self.coordinator.api.async_set_value(key, value)
+        except AdriaMachError as err:
+            raise HomeAssistantError(f"Could not set {key}: {err}") from err
+        if not ok:
+            raise HomeAssistantError(f"MACH rejected setting {key} to {value!r}")
+        if self.coordinator.data is not None:
+            self.coordinator.data[key] = value
+            self.async_write_ha_state()
+        await self.coordinator.async_request_refresh()

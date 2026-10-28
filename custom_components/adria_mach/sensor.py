@@ -118,13 +118,6 @@ SENSORS: tuple[SensorEntityDescription, ...] = (
         suggested_display_precision=1,
     ),
     SensorEntityDescription(
-        key="AIR_HEATER_TEMPERATURE",
-        translation_key="heater_setpoint",
-        device_class=SensorDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        icon="mdi:thermostat",
-    ),
-    SensorEntityDescription(
         key="ENERGY_SOURCE",
         translation_key="energy_source",
         icon="mdi:power-plug",

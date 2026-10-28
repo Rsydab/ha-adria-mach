@@ -35,7 +35,6 @@
       "battery_soc": { "name": "Bodelsbatteri" },
       "battery_voltage": { "name": "Bodelsbatteri spänning" },
       "battery_current": { "name": "Bodelsbatteri ström" },
-      "heater_setpoint": { "name": "Värmare börvärde" },
       "energy_source": { "name": "Energikälla" },
       "heater_notification": { "name": "Värmare notis" },
       "lte_signal": { "name": "LTE-signal" },
@@ -45,15 +44,22 @@
     "binary_sensor": {
       "mains_supply": { "name": "Landström" },
       "alde_panel": { "name": "Alde panel" },
-      "heater_on": { "name": "Värmare" },
       "heater_working": { "name": "Värmare arbetar" },
       "water_heater_working": { "name": "Varmvatten arbetar" },
-      "internal_light": { "name": "Innerbelysning" },
-      "external_light": { "name": "Ytterbelysning" },
       "water_pump": { "name": "Vattenpump" }
     },
     "device_tracker": {
       "position": { "name": "Position" }
+    },
+    "light": {
+      "internal_lights": { "name": "Innerbelysning" },
+      "external_lights": { "name": "Ytterbelysning" }
+    },
+    "switch": {
+      "heater": { "name": "Värmare" }
+    },
+    "number": {
+      "heater_setpoint": { "name": "Värmare börvärde" }
     }
   }
 }
