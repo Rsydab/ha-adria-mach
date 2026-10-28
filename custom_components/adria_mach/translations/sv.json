@@ -89,11 +89,11 @@
       "wifi_ssid": {
         "name": "Wi-Fi-namn"
       },
-      "tilt_y": {
-        "name": "Lutning Y-axel"
+      "tilt_front_back": {
+        "name": "Lutning fram/bak"
       },
-      "tilt_z": {
-        "name": "Lutning Z-axel"
+      "tilt_side": {
+        "name": "Lutning sida"
       }
     },
     "binary_sensor": {

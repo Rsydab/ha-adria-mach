@@ -38,8 +38,8 @@ SCENE_KEYS = tuple(f"LIGHT_SYSTEM_MEMORY_{n}" for n in range(1, 5))
 # Synthetic keys added to coordinator data from other calls / computations
 KEY_NOTIFICATION_COUNT = "NOTIFICATION_COUNT"
 KEY_WIFI_SSID = "WIFI_SSID"
-KEY_TILT_Y = "TILT_Y"
-KEY_TILT_Z = "TILT_Z"
+KEY_TILT_FRONT_BACK = "TILT_FRONT_BACK"
+KEY_TILT_SIDE = "TILT_SIDE"
 
 # Levelling: the unit's gravity vector when the vehicle was level, stored in
 # entry options by the "Calibrate level" button. Without it the unit's X axis

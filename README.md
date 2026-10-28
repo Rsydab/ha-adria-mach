@@ -176,11 +176,11 @@ for example `sensor.adria_mach_fridge_door_value` or `sensor.adria_mach_lte_oper
 
 ### Levelling
 
-The MACH unit has its own accelerometer (the app's spirit level uses the phone's). The integration
-turns it into two sensors, `sensor.adria_mach_tilt_y_axis` and `sensor.adria_mach_tilt_z_axis`, in
-degrees. Park the vehicle level once and press `button.adria_mach_calibrate_level`; from then on
-the angles are relative to that position. Which axis is front/back and which is side to side depends
-on how the unit is mounted: compare with a spirit level once and rename the sensors if you like.
+The app's remote levelling screen reads the MACH unit's own accelerometer, and so does the
+integration: `sensor.adria_mach_tilt_front_back` and `sensor.adria_mach_tilt_side` show the same two
+angles as the app, in degrees. Park the vehicle level once and press
+`button.adria_mach_calibrate_level`; from then on the angles are relative to that position, like the
+app's "calibrate default zero level".
 
 ### History
 

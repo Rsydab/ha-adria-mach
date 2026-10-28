@@ -89,11 +89,11 @@
       "wifi_ssid": {
         "name": "Wi-Fi SSID"
       },
-      "tilt_y": {
-        "name": "Tilt Y axis"
+      "tilt_front_back": {
+        "name": "Tilt front/back"
       },
-      "tilt_z": {
-        "name": "Tilt Z axis"
+      "tilt_side": {
+        "name": "Tilt side"
       }
     },
     "binary_sensor": {

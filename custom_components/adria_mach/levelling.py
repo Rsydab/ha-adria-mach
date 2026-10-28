@@ -50,7 +50,12 @@ def tilt_angles(
     acc: tuple[float, float, float],
     reference: tuple[float, float, float] | list[float] | None,
 ) -> tuple[float, float] | None:
-    """Return (tilt along Y axis, tilt along Z axis) in degrees, or None."""
+    """Return (front/back, side) tilt in degrees as the app shows them, or None.
+
+    Verified against the app's levelling screen on 2026-10-28: the app's
+    front/back value equals minus the tilt along the unit's Y axis and its
+    side value equals minus the tilt along the unit's Z axis.
+    """
     g = _norm(acc)
     ref = _norm(tuple(reference) if reference else DEFAULT_REFERENCE)  # type: ignore[arg-type]
     if g is None or ref is None:
@@ -63,4 +68,6 @@ def tilt_angles(
         return None
     tilt_y = math.degrees(math.asin(max(-1.0, min(1.0, _dot(g, axis_y)))))
     tilt_z = math.degrees(math.asin(max(-1.0, min(1.0, _dot(g, axis_z)))))
-    return (round(tilt_y, 1), round(tilt_z, 1))
+    front_back = round(-tilt_y, 1) + 0.0  # + 0.0 avoids "-0.0"
+    side = round(-tilt_z, 1) + 0.0
+    return (front_back, side)

@@ -33,8 +33,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from . import AdriaMachConfigEntry
 from .const import (
     KEY_NOTIFICATION_COUNT,
-    KEY_TILT_Y,
-    KEY_TILT_Z,
+    KEY_TILT_FRONT_BACK,
+    KEY_TILT_SIDE,
     KEY_WIFI_SSID,
     LIGHT_GROUP_KEYS,
     SCENE_KEYS,
@@ -183,16 +183,16 @@ SENSORS: tuple[SensorEntityDescription, ...] = (
         icon="mdi:wifi",
     ),
     SensorEntityDescription(
-        key=KEY_TILT_Y,
-        translation_key="tilt_y",
+        key=KEY_TILT_FRONT_BACK,
+        translation_key="tilt_front_back",
         native_unit_of_measurement=DEGREE,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,
         icon="mdi:angle-acute",
     ),
     SensorEntityDescription(
-        key=KEY_TILT_Z,
-        translation_key="tilt_z",
+        key=KEY_TILT_SIDE,
+        translation_key="tilt_side",
         native_unit_of_measurement=DEGREE,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,

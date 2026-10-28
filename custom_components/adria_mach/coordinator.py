@@ -16,8 +16,8 @@ from .const import (
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
     KEY_NOTIFICATION_COUNT,
-    KEY_TILT_Y,
-    KEY_TILT_Z,
+    KEY_TILT_FRONT_BACK,
+    KEY_TILT_SIDE,
     KEY_WIFI_SSID,
     SETTINGS_REFRESH_POLLS,
 )
@@ -73,5 +73,5 @@ class AdriaMachCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         if (acc := accel_vector(data)) is not None:
             reference = (self.config_entry.options or {}).get(CONF_LEVEL_REFERENCE)
             if (angles := tilt_angles(acc, reference)) is not None:
-                data[KEY_TILT_Y], data[KEY_TILT_Z] = angles
+                data[KEY_TILT_FRONT_BACK], data[KEY_TILT_SIDE] = angles
         return data
