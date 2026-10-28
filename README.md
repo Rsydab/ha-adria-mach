@@ -56,10 +56,11 @@ Entity ids below are for a device named "Adria MACH". Entity names follow the la
 Home Assistant (English and Swedish are included).
 
 <details>
-<summary><b>Sensors</b> (11)</summary>
+<summary><b>Sensors</b> (13)</summary>
 
 | Entity | What it shows |
 |---|---|
+| `sensor.adria_mach_notifications` | Number of notifications in the MACH's own notification centre |
 | `sensor.adria_mach_inside_temperature` | Inside temperature, °C |
 | `sensor.adria_mach_outside_temperature` | Outside temperature, °C |
 | `sensor.adria_mach_outside_humidity` | Outside humidity, % |
@@ -76,10 +77,11 @@ Home Assistant (English and Swedish are included).
 </details>
 
 <details>
-<summary><b>Diagnostic sensors</b> (6)</summary>
+<summary><b>Diagnostic sensors</b> (7)</summary>
 
 | Entity | What it shows |
 |---|---|
+| `sensor.adria_mach_wi_fi_ssid` | Name of the MACH's Wi-Fi hotspot |
 | `sensor.adria_mach_gas_sensor_status` | Gas sensor measurement status |
 | `sensor.adria_mach_gas_sensor_battery` | Gas sensor battery, % |
 | `sensor.adria_mach_heater_notification` | Heater notification/error text |
@@ -122,11 +124,15 @@ Home Assistant (English and Swedish are included).
 </details>
 
 <details>
-<summary><b>Number</b> (1)</summary>
+<summary><b>Numbers</b> (1 + one per light group)</summary>
 
 | Entity | Controls |
 |---|---|
 | `number.adria_mach_heater_setpoint` | Heater setpoint, 5–30 °C |
+| `number.adria_mach_<group name>` | Brightness of a dimmable light group, 1–99. One per group, named as in the app (for example `number.adria_mach_takspots_kok`). Groups you have named are enabled; unnamed groups are enabled when they report a level. |
+
+The MACH has no per-group off: a group is dimmed between 1 and 99, and all internal lights
+are switched together with `light.adria_mach_internal_lights`.
 
 </details>
 
@@ -149,9 +155,18 @@ for example `sensor.adria_mach_fridge_door_value` or `sensor.adria_mach_lte_oper
 - Values that are empty (tyre sensors, Bluetooth batteries, an air conditioner that is not
   fitted) and the duplicate `_H`/`_H0`/`_H1` variants are created **disabled**. Enable any of them
   under the device → *entities not shown*.
+- When a value **starts being used later** (you fit tyre sensors, say), its entity is enabled
+  automatically at the next restart or reload. Entities you disabled yourself are left alone.
 - Personal identifiers (SIM id, PINs, passwords) are never exposed.
 
 </details>
+
+### History
+
+At startup the integration imports the MACH's own 7-day history for the water tanks, gas
+bottles, leisure battery and temperatures into Home Assistant's statistics, so the week before you
+installed the integration is already in the graphs. A series is skipped when the unit's chart
+contradicts its live value.
 
 ## Upgrading
 
@@ -180,10 +195,11 @@ Not expected to. MACH Pure is Bluetooth-only and has no cloud connection.
 That is the Mopeka gas sensor on the bottle not reporting, not the integration. The app shows the
 same. Check the sensor's battery and placement.
 
-### Why do the lights only have on/off?
+### How do the dimmable light groups work?
 
-The MACH exposes the main internal and external light circuits as on/off. Dimmable light groups and
-scenes exist in the data and may be added later.
+Each light group is a number entity, 1–99, named as you named it in the app. The MACH rejects 0 and
+100, and it has no per-group off: use `light.adria_mach_internal_lights` to switch all internal
+lights. Light scenes exist in the data but are not controllable yet.
 
 ### What is the heater setpoint range?
 

@@ -154,6 +154,43 @@ class AdriaMachApi:
             values[str(item["device"])] = status
         return values
 
+    async def async_get_user_settings(self) -> dict[str, str]:
+        """Names of light groups/scenes, AUX name and Wi-Fi SSID.
+
+        The backend also returns the hotspot password; it is dropped here and
+        never stored.
+        """
+        payload = await self.async_rpc("systemRequest", "getMachUserSettings")
+        settings: dict[str, str] = {}
+        if isinstance(payload, dict):
+            for key, value in payload.items():
+                if isinstance(value, str) and (
+                    key.endswith("_name") or key in ("wifiSsid", "auxName")
+                ):
+                    settings[key] = value.strip()
+        return settings
+
+    async def async_count_notifications(self) -> int | None:
+        """Number of notifications in the unit's own notification centre."""
+        payload = await self.async_rpc("notification", "countNotifications", params={})
+        try:
+            return int((payload or {}).get("count"))
+        except (TypeError, ValueError):
+            return None
+
+    async def async_get_chart(self, value_id: str) -> list[tuple[int, float]]:
+        """7-day history for one value as (epoch_ms, value) pairs."""
+        payload = await self.async_rpc("chart", "getChart", device=value_id)
+        times = (payload or {}).get("time") or []
+        values = (payload or {}).get("value") or []
+        points: list[tuple[int, float]] = []
+        for ts, val in zip(times, values):
+            try:
+                points.append((int(ts), float(val)))
+            except (TypeError, ValueError):
+                continue
+        return points
+
     async def async_set_value(self, value_id: str, value: Any) -> bool:
         """Set one value on the unit. Envelope verified from the app's own call."""
         payload = await self.async_rpc(

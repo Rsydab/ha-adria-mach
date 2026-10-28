@@ -82,6 +82,12 @@
       },
       "firmware": {
         "name": "Firmware"
+      },
+      "notifications": {
+        "name": "Notiser"
+      },
+      "wifi_ssid": {
+        "name": "Wi-Fi-namn"
       }
     },
     "binary_sensor": {

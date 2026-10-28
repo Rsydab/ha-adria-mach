@@ -30,7 +30,14 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import AdriaMachConfigEntry
-from .const import SENSITIVE_KEY_PARTS
+from .const import (
+    KEY_NOTIFICATION_COUNT,
+    KEY_WIFI_SSID,
+    LIGHT_GROUP_KEYS,
+    SENSITIVE_KEY_PARTS,
+    is_variant,
+    value_in_use,
+)
 from .entity import AdriaMachEntity
 
 SENSORS: tuple[SensorEntityDescription, ...] = (
@@ -159,6 +166,18 @@ SENSORS: tuple[SensorEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:chip",
     ),
+    SensorEntityDescription(
+        key=KEY_NOTIFICATION_COUNT,
+        translation_key="notifications",
+        state_class=SensorStateClass.MEASUREMENT,
+        icon="mdi:bell",
+    ),
+    SensorEntityDescription(
+        key=KEY_WIFI_SSID,
+        translation_key="wifi_ssid",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        icon="mdi:wifi",
+    ),
 )
 
 NUMERIC_CLASSES = {
@@ -184,22 +203,14 @@ COVERED_BY_OTHER_PLATFORMS = {
     "AIR_HEATER_TEMPERATURE",
     "GPS_LATITUDE",
     "GPS_LONGITUDE",
+    *LIGHT_GROUP_KEYS,
 }
 
-VARIANT_SUFFIXES = ("_H", "_H0", "_H1")
 NO_STATS_PARTS = ("TIME", "UTC", "VERSION")
 
 
 def _is_sensitive(key: str) -> bool:
     return any(part in key for part in SENSITIVE_KEY_PARTS)
-
-
-def _is_variant(key: str) -> bool:
-    return any(key.endswith(s) for s in VARIANT_SUFFIXES)
-
-
-def _in_use(value: Any) -> bool:
-    return value is not None and value != ""
 
 
 def _unit_and_class(key: str) -> tuple[str | None, SensorDeviceClass | None]:
@@ -231,7 +242,7 @@ def _generic_description(key: str, value: Any) -> SensorEntityDescription:
         device_class=device_class,
         state_class=state_class,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=_in_use(value) and not _is_variant(key),
+        entity_registry_enabled_default=value_in_use(value) and not is_variant(key),
     )
 
 
