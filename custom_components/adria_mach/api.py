@@ -37,7 +37,7 @@ class AdriaMachApi:
         session: aiohttp.ClientSession,
         username: str,
         password: str,
-        mach_id: str,
+        mach_id: str | None = None,
     ) -> None:
         self._session = session
         self._username = username
@@ -84,10 +84,39 @@ class AdriaMachApi:
         assert self._token is not None
         return self._token
 
+    async def async_discover_devices(self) -> list[dict[str, str]]:
+        """List the MACH units registered on this account (mobile API syncData).
+
+        Returns [{"mach_id", "name", "type"}]. Other fields in the response,
+        such as the per-device shared secret, are deliberately not kept.
+        """
+        data = await self._post(
+            "/v0/api/mobile/syncData",
+            {
+                "payload": {"current": [], "deleted": []},
+                "auth": {"username": self._username, "password": self._password},
+            },
+        )
+        devices = data.get("devices") or {}
+        found: list[dict[str, str]] = []
+        for bucket in ("add", "update"):
+            for dev in devices.get(bucket) or []:
+                if isinstance(dev, dict) and dev.get("machId"):
+                    found.append(
+                        {
+                            "mach_id": str(dev["machId"]).upper(),
+                            "name": str(dev.get("name") or ""),
+                            "type": str(dev.get("type") or ""),
+                        }
+                    )
+        return found
+
     async def async_rpc(
         self, rtype: str, method: str, _retry: bool = True, **content: Any
     ) -> Any:
         """Call the generic /all RPC endpoint and return its payload."""
+        if not self.mach_id:
+            raise AdriaMachConnectionError("No MACH unit selected")
         token = await self._ensure_token()
         body = {
             "token": token,

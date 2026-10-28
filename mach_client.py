@@ -106,11 +106,19 @@ def main():
     username = env.get("MACH_USERNAME") or os.environ.get("MACH_USERNAME")
     password = env.get("MACH_PASSWORD") or os.environ.get("MACH_PASSWORD")
     mach_id = env.get("MACH_ID") or os.environ.get("MACH_ID")
-    if not (username and password and mach_id):
-        raise SystemExit("Saknar MACH_USERNAME, MACH_PASSWORD eller MACH_ID. Kopiera .env.example till .env och fyll i.")
+    if not (username and password):
+        raise SystemExit("Saknar MACH_USERNAME eller MACH_PASSWORD. Kopiera .env.example till .env och fyll i.")
 
     try:
         token = auth(username, password)
+        if not mach_id:
+            sync = post("/v0/api/mobile/syncData", {"payload": {"current": [], "deleted": []},
+                                                    "auth": {"username": username, "password": password}})
+            found = [d["machId"] for b in ("add", "update") for d in (sync.get("devices", {}).get(b) or []) if d.get("machId")]
+            if not found:
+                raise SystemExit("Ingen MACH-enhet hittades på kontot.")
+            mach_id = found[0]
+            print("Hittade enhet automatiskt: %s%s" % (mach_id, " (fler finns: %s)" % ", ".join(found[1:]) if len(found) > 1 else ""))
         info = rpc(token, mach_id, "systemRequest", "getMachInfo")
         print("MACH-info: typ=%s version=%s release=%s" % (info.get("type"), info.get("version"), info.get("releaseType")))
 

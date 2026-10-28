@@ -3,18 +3,25 @@
     "step": {
       "user": {
         "title": "Adria MACH",
-        "description": "Sign in with your MACH account. The unit id is shown in the app as 'Establishing LTE connection to ...'.",
+        "description": "Sign in with your MACH account. Your MACH unit is found automatically.",
         "data": {
           "username": "Email (MACH account)",
-          "password": "Password",
-          "mach_id": "MACH unit id"
+          "password": "Password"
+        }
+      },
+      "device": {
+        "title": "Select MACH unit",
+        "description": "Your account has several MACH units. Choose the one to add.",
+        "data": {
+          "mach_id": "MACH unit"
         }
       }
     },
     "error": {
       "invalid_auth": "Invalid email or password.",
       "cannot_connect": "Could not reach the MACH cloud.",
-      "unknown": "Unexpected error."
+      "unknown": "Unexpected error.",
+      "no_devices": "No MACH unit is registered on this account."
     },
     "abort": {
       "already_configured": "This MACH unit is already configured."
@@ -22,44 +29,100 @@
   },
   "entity": {
     "sensor": {
-      "inside_temperature": { "name": "Inside temperature" },
-      "outside_temperature": { "name": "Outside temperature" },
-      "outside_humidity": { "name": "Outside humidity" },
-      "air_pressure": { "name": "Air pressure" },
-      "fresh_water": { "name": "Fresh water" },
-      "waste_water": { "name": "Waste water" },
-      "gas_bottle_1": { "name": "Gas bottle 1" },
-      "gas_bottle_2": { "name": "Gas bottle 2" },
-      "gas_sensor_status": { "name": "Gas sensor status" },
-      "gas_sensor_battery": { "name": "Gas sensor battery" },
-      "battery_soc": { "name": "Leisure battery" },
-      "battery_voltage": { "name": "Leisure battery voltage" },
-      "battery_current": { "name": "Leisure battery current" },
-      "energy_source": { "name": "Energy source" },
-      "heater_notification": { "name": "Heater notification" },
-      "lte_signal": { "name": "LTE signal" },
-      "unit_temperature": { "name": "Unit temperature" },
-      "firmware": { "name": "Firmware" }
+      "inside_temperature": {
+        "name": "Inside temperature"
+      },
+      "outside_temperature": {
+        "name": "Outside temperature"
+      },
+      "outside_humidity": {
+        "name": "Outside humidity"
+      },
+      "air_pressure": {
+        "name": "Air pressure"
+      },
+      "fresh_water": {
+        "name": "Fresh water"
+      },
+      "waste_water": {
+        "name": "Waste water"
+      },
+      "gas_bottle_1": {
+        "name": "Gas bottle 1"
+      },
+      "gas_bottle_2": {
+        "name": "Gas bottle 2"
+      },
+      "gas_sensor_status": {
+        "name": "Gas sensor status"
+      },
+      "gas_sensor_battery": {
+        "name": "Gas sensor battery"
+      },
+      "battery_soc": {
+        "name": "Leisure battery"
+      },
+      "battery_voltage": {
+        "name": "Leisure battery voltage"
+      },
+      "battery_current": {
+        "name": "Leisure battery current"
+      },
+      "energy_source": {
+        "name": "Energy source"
+      },
+      "heater_notification": {
+        "name": "Heater notification"
+      },
+      "lte_signal": {
+        "name": "LTE signal"
+      },
+      "unit_temperature": {
+        "name": "Unit temperature"
+      },
+      "firmware": {
+        "name": "Firmware"
+      }
     },
     "binary_sensor": {
-      "mains_supply": { "name": "Mains supply" },
-      "alde_panel": { "name": "Alde panel" },
-      "heater_working": { "name": "Heater running" },
-      "water_heater_working": { "name": "Water heater running" },
-      "water_pump": { "name": "Water pump" }
+      "mains_supply": {
+        "name": "Mains supply"
+      },
+      "alde_panel": {
+        "name": "Alde panel"
+      },
+      "heater_working": {
+        "name": "Heater running"
+      },
+      "water_heater_working": {
+        "name": "Water heater running"
+      },
+      "water_pump": {
+        "name": "Water pump"
+      }
     },
     "device_tracker": {
-      "position": { "name": "Position" }
+      "position": {
+        "name": "Position"
+      }
     },
     "light": {
-      "internal_lights": { "name": "Internal lights" },
-      "external_lights": { "name": "External lights" }
+      "internal_lights": {
+        "name": "Internal lights"
+      },
+      "external_lights": {
+        "name": "External lights"
+      }
     },
     "switch": {
-      "heater": { "name": "Heater" }
+      "heater": {
+        "name": "Heater"
+      }
     },
     "number": {
-      "heater_setpoint": { "name": "Heater setpoint" }
+      "heater_setpoint": {
+        "name": "Heater setpoint"
+      }
     }
   }
 }

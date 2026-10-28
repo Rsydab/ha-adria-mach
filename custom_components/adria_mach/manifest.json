@@ -1,12 +1,14 @@
 {
   "domain": "adria_mach",
   "name": "Adria MACH",
-  "codeowners": ["@Rsydab"],
+  "codeowners": [
+    "@Rsydab"
+  ],
   "config_flow": true,
   "documentation": "https://github.com/Rsydab/ha-adria-mach",
   "integration_type": "device",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Rsydab/ha-adria-mach/issues",
   "requirements": [],
-  "version": "0.2.0"
+  "version": "0.3.0"
 }

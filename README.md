@@ -21,7 +21,8 @@ Copy `custom_components/adria_mach` into your Home Assistant `config/custom_comp
 ### Configure
 
 Settings → Devices & services → Add integration → **Adria MACH**. Enter your MACH account
-email, password and the unit id (the app shows it as "Establishing LTE connection to XXXXXXXXXXXX").
+email and password. The MACH unit is found automatically; if the account has several units
+you pick one.
 
 Polls the cloud every 60 seconds. The token lives 2 hours and is renewed automatically.
 
