@@ -2,6 +2,7 @@
 
 Only email and password are asked for. The MACH unit is discovered from the
 account; if the account has several units, the user picks one.
+The options flow sets the poll interval.
 """
 
 from __future__ import annotations
@@ -11,12 +12,25 @@ from typing import Any
 
 import voluptuous as vol
 
-from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
-from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
+from homeassistant.config_entries import (
+    ConfigEntry,
+    ConfigFlow,
+    ConfigFlowResult,
+    OptionsFlow,
+)
+from homeassistant.const import CONF_PASSWORD, CONF_SCAN_INTERVAL, CONF_USERNAME
+from homeassistant.core import callback
+from homeassistant.helpers import selector
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import AdriaMachApi, AdriaMachAuthError, AdriaMachConnectionError
-from .const import CONF_MACH_ID, DOMAIN
+from .const import (
+    CONF_MACH_ID,
+    DEFAULT_SCAN_INTERVAL,
+    DOMAIN,
+    SCAN_INTERVAL_MAX,
+    SCAN_INTERVAL_MIN,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -37,6 +51,11 @@ class AdriaMachConfigFlow(ConfigFlow, domain=DOMAIN):
         self._username: str = ""
         self._password: str = ""
         self._devices: list[dict[str, str]] = []
+
+    @staticmethod
+    @callback
+    def async_get_options_flow(config_entry: ConfigEntry) -> AdriaMachOptionsFlow:
+        return AdriaMachOptionsFlow()
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
@@ -95,3 +114,31 @@ class AdriaMachConfigFlow(ConfigFlow, domain=DOMAIN):
                 CONF_MACH_ID: mach_id,
             },
         )
+
+
+class AdriaMachOptionsFlow(OptionsFlow):
+    """Poll interval."""
+
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        if user_input is not None:
+            return self.async_create_entry(
+                data={CONF_SCAN_INTERVAL: int(user_input[CONF_SCAN_INTERVAL])}
+            )
+
+        current = self.config_entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+        schema = vol.Schema(
+            {
+                vol.Required(CONF_SCAN_INTERVAL, default=current): selector.NumberSelector(
+                    selector.NumberSelectorConfig(
+                        min=SCAN_INTERVAL_MIN,
+                        max=SCAN_INTERVAL_MAX,
+                        step=10,
+                        unit_of_measurement="s",
+                        mode=selector.NumberSelectorMode.BOX,
+                    )
+                )
+            }
+        )
+        return self.async_show_form(step_id="init", data_schema=schema)

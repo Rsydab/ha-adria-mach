@@ -124,5 +124,15 @@
         "name": "Heater setpoint"
       }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Adria MACH options",
+        "data": {
+          "scan_interval": "Update interval (seconds)"
+        }
+      }
+    }
   }
 }

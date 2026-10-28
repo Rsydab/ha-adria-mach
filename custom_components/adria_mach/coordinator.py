@@ -18,12 +18,14 @@ _LOGGER = logging.getLogger(__name__)
 class AdriaMachCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     """Polls getValuesAll on a fixed interval."""
 
-    def __init__(self, hass: HomeAssistant, api: AdriaMachApi) -> None:
+    def __init__(
+        self, hass: HomeAssistant, api: AdriaMachApi, scan_interval: int = DEFAULT_SCAN_INTERVAL
+    ) -> None:
         super().__init__(
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(seconds=DEFAULT_SCAN_INTERVAL),
+            update_interval=timedelta(seconds=scan_interval),
         )
         self.api = api
         self.mach_info: dict[str, Any] = {}

@@ -124,5 +124,15 @@
         "name": "Värmare börvärde"
       }
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Alternativ för Adria MACH",
+        "data": {
+          "scan_interval": "Uppdateringsintervall (sekunder)"
+        }
+      }
+    }
   }
 }

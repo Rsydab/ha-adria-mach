@@ -47,21 +47,111 @@ controls the vehicle from the app.
 2. Enter the email and password of your MACH account.
 3. Your MACH unit is found automatically. If the account has several, pick one.
 
-You now have a device called **Adria MACH** with the entities below. Values refresh every 60 seconds.
+You now have a device called **Adria MACH** with the entities below. Values refresh every 60 seconds
+by default; change it with the gear icon on the integration (30–600 seconds).
 
 ## Entities
 
-| Kind | Entities |
-|---|---|
-| Sensors | Inside temperature, outside temperature, outside humidity, air pressure, fresh water, waste water, gas bottle 1, gas bottle 2, leisure battery (level, voltage, current), energy source |
-| Diagnostic sensors | Gas sensor status and battery, heater notification, LTE signal, unit temperature, firmware |
-| Binary sensors | Mains supply, Alde panel, heater running, water heater running, water pump |
-| Lights | Internal lights, external lights |
-| Switch | Heater (Alde air heater on/off) |
-| Number | Heater setpoint, °C |
-| Device tracker | Vehicle GPS position |
+Entity ids below are for a device named "Adria MACH". Entity names follow the language set in
+Home Assistant (English and Swedish are included).
 
-Entity names follow the language set in Home Assistant (English and Swedish are included).
+<details>
+<summary><b>Sensors</b> (11)</summary>
+
+| Entity | What it shows |
+|---|---|
+| `sensor.adria_mach_inside_temperature` | Inside temperature, °C |
+| `sensor.adria_mach_outside_temperature` | Outside temperature, °C |
+| `sensor.adria_mach_outside_humidity` | Outside humidity, % |
+| `sensor.adria_mach_air_pressure` | Air pressure, hPa |
+| `sensor.adria_mach_fresh_water` | Fresh water tank, % |
+| `sensor.adria_mach_waste_water` | Waste water tank, % |
+| `sensor.adria_mach_gas_bottle_1` | Gas bottle 1, % |
+| `sensor.adria_mach_gas_bottle_2` | Gas bottle 2, % |
+| `sensor.adria_mach_leisure_battery` | Leisure battery state of charge, % |
+| `sensor.adria_mach_leisure_battery_voltage` | Leisure battery, V |
+| `sensor.adria_mach_leisure_battery_current` | Leisure battery, A |
+| `sensor.adria_mach_energy_source` | Active energy source (e.g. `el1`) |
+
+</details>
+
+<details>
+<summary><b>Diagnostic sensors</b> (6)</summary>
+
+| Entity | What it shows |
+|---|---|
+| `sensor.adria_mach_gas_sensor_status` | Gas sensor measurement status |
+| `sensor.adria_mach_gas_sensor_battery` | Gas sensor battery, % |
+| `sensor.adria_mach_heater_notification` | Heater notification/error text |
+| `sensor.adria_mach_lte_signal` | LTE signal strength |
+| `sensor.adria_mach_unit_temperature` | MACH unit temperature, °C |
+| `sensor.adria_mach_firmware` | MACH firmware version |
+
+</details>
+
+<details>
+<summary><b>Binary sensors</b> (5)</summary>
+
+| Entity | What it shows |
+|---|---|
+| `binary_sensor.adria_mach_mains_supply` | Connected to mains (shore power) |
+| `binary_sensor.adria_mach_alde_panel` | Alde panel powered |
+| `binary_sensor.adria_mach_heater_running` | Air heater running |
+| `binary_sensor.adria_mach_water_heater_running` | Water heater running |
+| `binary_sensor.adria_mach_water_pump` | Water pump on |
+
+</details>
+
+<details>
+<summary><b>Lights</b> (2)</summary>
+
+| Entity | Controls |
+|---|---|
+| `light.adria_mach_internal_lights` | Internal lights, on/off |
+| `light.adria_mach_external_lights` | External lights, on/off |
+
+</details>
+
+<details>
+<summary><b>Switch</b> (1)</summary>
+
+| Entity | Controls |
+|---|---|
+| `switch.adria_mach_heater` | Alde air heater on/off |
+
+</details>
+
+<details>
+<summary><b>Number</b> (1)</summary>
+
+| Entity | Controls |
+|---|---|
+| `number.adria_mach_heater_setpoint` | Heater setpoint, 5–30 °C |
+
+</details>
+
+<details>
+<summary><b>Device tracker</b> (1)</summary>
+
+| Entity | What it shows |
+|---|---|
+| `device_tracker.adria_mach_position` | Vehicle GPS position, with altitude, speed and satellites as attributes |
+
+</details>
+
+<details>
+<summary><b>Everything else the unit reports</b> (about 230 values)</summary>
+
+Every other value the MACH reports is also created as a diagnostic sensor, named after the value,
+for example `sensor.adria_mach_fridge_door_value` or `sensor.adria_mach_lte_operator_name`.
+
+- Values that are **in use** when the integration starts are enabled automatically.
+- Values that are empty (tyre sensors, Bluetooth batteries, an air conditioner that is not
+  fitted) and the duplicate `_H`/`_H0`/`_H1` variants are created **disabled**. Enable any of them
+  under the device → *entities not shown*.
+- Personal identifiers (SIM id, PINs, passwords) are never exposed.
+
+</details>
 
 ## Upgrading
 
@@ -102,7 +192,13 @@ panels; the backend has only been tested with whole degrees.
 
 ### Can I change how often it polls?
 
-Not yet. The interval is fixed at 60 seconds, which matches how often the app itself refreshes.
+Yes. Click the gear icon on the integration and set the update interval, 30–600 seconds. The default
+of 60 seconds matches how often the app itself refreshes. The change applies immediately.
+
+### An entity I want is missing
+
+Open the Adria MACH device and look under *entities not shown*: every value the unit reports is
+there, the unused ones disabled. Enable the one you want.
 
 ### Something stopped working after an app update
 
