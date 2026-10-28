@@ -34,6 +34,7 @@ from .const import (
     KEY_NOTIFICATION_COUNT,
     KEY_WIFI_SSID,
     LIGHT_GROUP_KEYS,
+    SCENE_KEYS,
     SENSITIVE_KEY_PARTS,
     is_variant,
     value_in_use,
@@ -204,6 +205,7 @@ COVERED_BY_OTHER_PLATFORMS = {
     "GPS_LATITUDE",
     "GPS_LONGITUDE",
     *LIGHT_GROUP_KEYS,
+    *SCENE_KEYS,
 }
 
 NO_STATS_PARTS = ("TIME", "UTC", "VERSION")

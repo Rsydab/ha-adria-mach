@@ -25,6 +25,8 @@ PLATFORMS: list[Platform] = [
     Platform.LIGHT,
     Platform.SWITCH,
     Platform.NUMBER,
+    Platform.SCENE,
+    Platform.BUTTON,
 ]
 
 type AdriaMachConfigEntry = ConfigEntry[AdriaMachCoordinator]

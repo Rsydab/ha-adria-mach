@@ -105,12 +105,29 @@ Home Assistant (English and Swedish are included).
 </details>
 
 <details>
-<summary><b>Lights</b> (2)</summary>
+<summary><b>Lights</b> (2 + one per light group)</summary>
 
 | Entity | Controls |
 |---|---|
-| `light.adria_mach_internal_lights` | Internal lights, on/off |
+| `light.adria_mach_internal_lights` | All internal lights, on/off |
 | `light.adria_mach_external_lights` | External lights, on/off |
+| `light.adria_mach_<group name>` | One light group, on/off and brightness 0–100 %, named as in the app (for example `light.adria_mach_ledlister_kok`). Groups you have named are enabled; unnamed groups are enabled when they report a level. |
+
+The unit does not report a group's level while it is on, so group lights show the last state
+Home Assistant commanded (assumed state). Groups that are on/off only in the app reject levels;
+they are switched on at full.
+
+</details>
+
+<details>
+<summary><b>Scenes and buttons</b> (one per light scene)</summary>
+
+| Entity | Controls |
+|---|---|
+| `scene.adria_mach_<scene name>` | Activate a light scene stored in the MACH, named as in the app (for example `scene.adria_mach_kvall`) |
+| `button.adria_mach_save_scene_<scene name>` | Store the current lights into that scene slot |
+
+Named scenes are enabled; empty slots are created disabled.
 
 </details>
 
@@ -124,15 +141,11 @@ Home Assistant (English and Swedish are included).
 </details>
 
 <details>
-<summary><b>Numbers</b> (1 + one per light group)</summary>
+<summary><b>Number</b> (1)</summary>
 
 | Entity | Controls |
 |---|---|
 | `number.adria_mach_heater_setpoint` | Heater setpoint, 5–30 °C |
-| `number.adria_mach_<group name>` | Brightness of a dimmable light group, 1–99. One per group, named as in the app (for example `number.adria_mach_takspots_kok`). Groups you have named are enabled; unnamed groups are enabled when they report a level. |
-
-The MACH has no per-group off: a group is dimmed between 1 and 99, and all internal lights
-are switched together with `light.adria_mach_internal_lights`.
 
 </details>
 
@@ -195,11 +208,13 @@ Not expected to. MACH Pure is Bluetooth-only and has no cloud connection.
 That is the Mopeka gas sensor on the bottle not reporting, not the integration. The app shows the
 same. Check the sensor's battery and placement.
 
-### How do the dimmable light groups work?
+### How do the light groups work?
 
-Each light group is a number entity, 1–99, named as you named it in the app. The MACH rejects 0 and
-100, and it has no per-group off: use `light.adria_mach_internal_lights` to switch all internal
-lights. Light scenes exist in the data but are not controllable yet.
+Each light group is a light entity with brightness, named as you named it in the app. Behind the
+scenes 0–100 % becomes 1–50 on the unit, and off is a separate command, exactly as the app does it.
+The unit does not report a group's level while it is on, so Home Assistant shows the last state it
+sent. A group that is on/off only in the app rejects levels and is switched on at full. Scenes stored
+in the MACH are scene entities, with a button each to overwrite the scene with the current lights.
 
 ### What is the heater setpoint range?
 

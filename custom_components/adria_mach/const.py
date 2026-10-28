@@ -26,10 +26,14 @@ def value_in_use(value) -> bool:
     return value is not None and value != ""
 
 
-# Dimmable light groups; the unit accepts 1..99 (0 and 100 are rejected)
+# Light groups. Observed from the app: 0-100 % in the app maps to 1..50 on the
+# unit (52 % -> 26, 100 % -> 50), and a group is switched off by sending the
+# NOT_SET sentinel. Some groups are on/off only and reject levels.
 LIGHT_GROUP_KEYS = tuple(f"LIGHT_GROUP_{n}_BRIGHTNESS" for n in range(1, 11))
-LIGHT_GROUP_MIN = 1
-LIGHT_GROUP_MAX = 99
+LIGHT_GROUP_DEVICE_MAX = 50
+
+# Light scenes: "restore" activates, "save" stores the current lights
+SCENE_KEYS = tuple(f"LIGHT_SYSTEM_MEMORY_{n}" for n in range(1, 5))
 
 # Synthetic keys added to coordinator data from other calls
 KEY_NOTIFICATION_COUNT = "NOTIFICATION_COUNT"
