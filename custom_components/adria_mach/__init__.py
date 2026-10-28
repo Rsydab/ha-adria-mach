@@ -44,7 +44,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: AdriaMachConfigEntry) ->
         entry.data[CONF_PASSWORD],
         entry.data[CONF_MACH_ID],
     )
-    coordinator = AdriaMachCoordinator(hass, api, _scan_interval(entry))
+    coordinator = AdriaMachCoordinator(hass, entry, api, _scan_interval(entry))
     await coordinator.async_config_entry_first_refresh()
     entry.runtime_data = coordinator
 
@@ -83,8 +83,9 @@ def _async_enable_values_now_in_use(
 
 
 async def _async_options_updated(hass: HomeAssistant, entry: AdriaMachConfigEntry) -> None:
-    """Apply a changed poll interval without reloading."""
+    """Apply changed options (poll interval, level reference) without reloading."""
     entry.runtime_data.update_interval = timedelta(seconds=_scan_interval(entry))
+    await entry.runtime_data.async_request_refresh()
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: AdriaMachConfigEntry) -> bool:

@@ -35,9 +35,17 @@ LIGHT_GROUP_DEVICE_MAX = 50
 # Light scenes: "restore" activates, "save" stores the current lights
 SCENE_KEYS = tuple(f"LIGHT_SYSTEM_MEMORY_{n}" for n in range(1, 5))
 
-# Synthetic keys added to coordinator data from other calls
+# Synthetic keys added to coordinator data from other calls / computations
 KEY_NOTIFICATION_COUNT = "NOTIFICATION_COUNT"
 KEY_WIFI_SSID = "WIFI_SSID"
+KEY_TILT_Y = "TILT_Y"
+KEY_TILT_Z = "TILT_Z"
+
+# Levelling: the unit's gravity vector when the vehicle was level, stored in
+# entry options by the "Calibrate level" button. Without it the unit's X axis
+# is assumed vertical (how the unit is mounted on this vehicle).
+CONF_LEVEL_REFERENCE = "level_reference"
+ACCEL_KEYS = ("ACCELERATION_X", "ACCELERATION_Y", "ACCELERATION_Z")
 
 # User settings are re-read every N polls (names and SSID rarely change)
 SETTINGS_REFRESH_POLLS = 60

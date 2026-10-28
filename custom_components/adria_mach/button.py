@@ -1,6 +1,7 @@
-"""Button platform for Adria MACH: save the current lights into a scene slot.
+"""Button platform for Adria MACH.
 
-Pressing sends "save" to the scene slot (observed from the app).
+- Save the current lights into a scene slot (sends "save", observed from the app).
+- Calibrate level: store the current gravity vector as the levelling reference.
 """
 
 from __future__ import annotations
@@ -8,12 +9,21 @@ from __future__ import annotations
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import AdriaMachConfigEntry
-from .const import SCENE_KEYS
+from .const import CONF_LEVEL_REFERENCE, SCENE_KEYS
 from .entity import AdriaMachEntity
+from .levelling import accel_vector
 from .scene import scene_name
+
+CALIBRATE = ButtonEntityDescription(
+    key="ACCELERATION_X",
+    translation_key="calibrate_level",
+    icon="mdi:axis-z-rotate-clockwise",
+    entity_category=EntityCategory.CONFIG,
+)
 
 
 async def async_setup_entry(
@@ -22,7 +32,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator = entry.runtime_data
-    entities = []
+    entities: list[ButtonEntity] = []
     for key in SCENE_KEYS:
         if key not in coordinator.data:
             continue
@@ -39,6 +49,8 @@ async def async_setup_entry(
                 ),
             )
         )
+    if accel_vector(coordinator.data) is not None:
+        entities.append(AdriaMachCalibrateButton(coordinator, CALIBRATE))
     async_add_entities(entities)
 
 
@@ -58,6 +70,17 @@ class AdriaMachSaveSceneButton(AdriaMachEntity, ButtonEntity):
         key = self.entity_description.key.removesuffix("_save")
         ok = await self.coordinator.api.async_set_value(key, "save")
         if not ok:
-            from homeassistant.exceptions import HomeAssistantError  # noqa: PLC0415
-
             raise HomeAssistantError(f"MACH did not save scene {self.name}")
+
+
+class AdriaMachCalibrateButton(AdriaMachEntity, ButtonEntity):
+    """Store the current gravity vector as 'level'."""
+
+    async def async_press(self) -> None:
+        acc = accel_vector(self.coordinator.data)
+        if acc is None:
+            raise HomeAssistantError("No accelerometer reading available")
+        entry = self.coordinator.config_entry
+        self.hass.config_entries.async_update_entry(
+            entry, options={**entry.options, CONF_LEVEL_REFERENCE: list(acc)}
+        )

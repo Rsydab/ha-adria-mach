@@ -19,6 +19,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
+    DEGREE,
     PERCENTAGE,
     EntityCategory,
     UnitOfElectricCurrent,
@@ -32,6 +33,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from . import AdriaMachConfigEntry
 from .const import (
     KEY_NOTIFICATION_COUNT,
+    KEY_TILT_Y,
+    KEY_TILT_Z,
     KEY_WIFI_SSID,
     LIGHT_GROUP_KEYS,
     SCENE_KEYS,
@@ -178,6 +181,22 @@ SENSORS: tuple[SensorEntityDescription, ...] = (
         translation_key="wifi_ssid",
         entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:wifi",
+    ),
+    SensorEntityDescription(
+        key=KEY_TILT_Y,
+        translation_key="tilt_y",
+        native_unit_of_measurement=DEGREE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
+        icon="mdi:angle-acute",
+    ),
+    SensorEntityDescription(
+        key=KEY_TILT_Z,
+        translation_key="tilt_z",
+        native_unit_of_measurement=DEGREE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
+        icon="mdi:angle-acute",
     ),
 )
 
