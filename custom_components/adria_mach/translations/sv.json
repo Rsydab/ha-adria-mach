@@ -1,0 +1,59 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Adria MACH",
+        "description": "Logga in med ditt MACH-konto. Enhets-id visas i appen som 'Upprättar en LTE anslutning till ...'.",
+        "data": {
+          "username": "E-post (MACH-konto)",
+          "password": "Lösenord",
+          "mach_id": "MACH enhets-id"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Fel e-post eller lösenord.",
+      "cannot_connect": "Kunde inte nå MACH-molnet.",
+      "unknown": "Oväntat fel."
+    },
+    "abort": {
+      "already_configured": "Den här MACH-enheten är redan konfigurerad."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "inside_temperature": { "name": "Inomhustemperatur" },
+      "outside_temperature": { "name": "Utomhustemperatur" },
+      "outside_humidity": { "name": "Utomhusfuktighet" },
+      "air_pressure": { "name": "Lufttryck" },
+      "fresh_water": { "name": "Färskvatten" },
+      "waste_water": { "name": "Gråvatten" },
+      "gas_bottle_1": { "name": "Gasol flaska 1" },
+      "gas_bottle_2": { "name": "Gasol flaska 2" },
+      "gas_sensor_status": { "name": "Gasolsensor status" },
+      "gas_sensor_battery": { "name": "Gasolsensor batteri" },
+      "battery_soc": { "name": "Bodelsbatteri" },
+      "battery_voltage": { "name": "Bodelsbatteri spänning" },
+      "battery_current": { "name": "Bodelsbatteri ström" },
+      "heater_setpoint": { "name": "Värmare börvärde" },
+      "energy_source": { "name": "Energikälla" },
+      "heater_notification": { "name": "Värmare notis" },
+      "lte_signal": { "name": "LTE-signal" },
+      "unit_temperature": { "name": "Enhetstemperatur" },
+      "firmware": { "name": "Firmware" }
+    },
+    "binary_sensor": {
+      "mains_supply": { "name": "Landström" },
+      "alde_panel": { "name": "Alde panel" },
+      "heater_on": { "name": "Värmare" },
+      "heater_working": { "name": "Värmare arbetar" },
+      "water_heater_working": { "name": "Varmvatten arbetar" },
+      "internal_light": { "name": "Innerbelysning" },
+      "external_light": { "name": "Ytterbelysning" },
+      "water_pump": { "name": "Vattenpump" }
+    },
+    "device_tracker": {
+      "position": { "name": "Position" }
+    }
+  }
+}

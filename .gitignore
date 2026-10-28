@@ -1,0 +1,7 @@
+# Secrets and personal data - never commit
+.env
+last_values.json
+
+# Python
+__pycache__/
+*.pyc

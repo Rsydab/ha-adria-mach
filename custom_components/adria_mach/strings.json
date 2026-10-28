@@ -1,0 +1,59 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Adria MACH",
+        "description": "Sign in with your MACH account. The unit id is shown in the app as 'Establishing LTE connection to ...'.",
+        "data": {
+          "username": "Email (MACH account)",
+          "password": "Password",
+          "mach_id": "MACH unit id"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid email or password.",
+      "cannot_connect": "Could not reach the MACH cloud.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "This MACH unit is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "inside_temperature": { "name": "Inside temperature" },
+      "outside_temperature": { "name": "Outside temperature" },
+      "outside_humidity": { "name": "Outside humidity" },
+      "air_pressure": { "name": "Air pressure" },
+      "fresh_water": { "name": "Fresh water" },
+      "waste_water": { "name": "Waste water" },
+      "gas_bottle_1": { "name": "Gas bottle 1" },
+      "gas_bottle_2": { "name": "Gas bottle 2" },
+      "gas_sensor_status": { "name": "Gas sensor status" },
+      "gas_sensor_battery": { "name": "Gas sensor battery" },
+      "battery_soc": { "name": "Leisure battery" },
+      "battery_voltage": { "name": "Leisure battery voltage" },
+      "battery_current": { "name": "Leisure battery current" },
+      "heater_setpoint": { "name": "Heater setpoint" },
+      "energy_source": { "name": "Energy source" },
+      "heater_notification": { "name": "Heater notification" },
+      "lte_signal": { "name": "LTE signal" },
+      "unit_temperature": { "name": "Unit temperature" },
+      "firmware": { "name": "Firmware" }
+    },
+    "binary_sensor": {
+      "mains_supply": { "name": "Mains supply" },
+      "alde_panel": { "name": "Alde panel" },
+      "heater_on": { "name": "Heater" },
+      "heater_working": { "name": "Heater running" },
+      "water_heater_working": { "name": "Water heater running" },
+      "internal_light": { "name": "Internal lights" },
+      "external_light": { "name": "External lights" },
+      "water_pump": { "name": "Water pump" }
+    },
+    "device_tracker": {
+      "position": { "name": "Position" }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "adria_mach",
+  "name": "Adria MACH",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://github.com/Rsydab/ha-adria-mach",
+  "issue_tracker": "https://github.com/Rsydab/ha-adria-mach/issues",
+  "integration_type": "device",
+  "iot_class": "cloud_polling",
+  "requirements": [],
+  "version": "0.1.0"
+}
