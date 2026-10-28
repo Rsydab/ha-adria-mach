@@ -4,6 +4,11 @@
   "after_dependencies": [
     "recorder"
   ],
+  "categories": [
+    "vehicles_transport",
+    "climate.thermostats_heating",
+    "lighting.lighting_systems"
+  ],
   "codeowners": [
     "@Rsydab"
   ],
@@ -13,5 +18,5 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Rsydab/ha-adria-mach/issues",
   "requirements": [],
-  "version": "0.9.0"
+  "version": "0.9.1"
 }
