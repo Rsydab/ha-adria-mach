@@ -49,6 +49,7 @@ class AdriaMachCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         )
         self.api = api
         self.mach_info: dict[str, Any] = {}
+        self._mach_info_tried = False
         self.user_settings: dict[str, str] = {}
         self.onoff_groups: list[str] = []
         self._polls = 0
@@ -63,8 +64,14 @@ class AdriaMachCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
     async def _async_update_data(self) -> dict[str, Any]:
         try:
-            if not self.mach_info:
-                self.mach_info = await self.api.async_get_mach_info()
+            if not self._mach_info_tried:
+                # Only used for the firmware update check: a unit that cannot
+                # answer it (older firmware) must still load.
+                try:
+                    self.mach_info = await self.api.async_get_mach_info()
+                except AdriaMachConnectionError as err:
+                    _LOGGER.warning("MACH unit info unavailable: %s", err)
+                self._mach_info_tried = True
             data = await self.api.async_get_all_values()
             if not self.user_settings or self._polls % SETTINGS_REFRESH_POLLS == 0:
                 self.user_settings = await self.api.async_get_user_settings()
@@ -81,7 +88,7 @@ class AdriaMachCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             _LOGGER.debug("Notification count unavailable: %s", err)
         if ssid := self.user_settings.get("wifiSsid"):
             data[KEY_WIFI_SSID] = ssid
-        if self._updates is None or self._polls % UPDATES_REFRESH_POLLS == 0:
+        if self.mach_info and (self._updates is None or self._polls % UPDATES_REFRESH_POLLS == 0):
             try:
                 self._updates = await self.api.async_get_updates_available(self.mach_info)
             except AdriaMachError as err:

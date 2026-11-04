@@ -148,7 +148,14 @@ class AdriaMachApi:
                 # Token may have been invalidated server-side: re-auth once.
                 self._token = None
                 return await self.async_rpc(rtype, method, _retry=False, **content)
-            raise AdriaMachConnectionError(f"RPC {rtype}/{method} returned status {status}")
+            # status 400 carries the cloud's reason, e.g. "Communication with MACH
+            # <id> failed: ...", which tells an offline unit from an unknown method.
+            payload = data.get("payload")
+            message = payload.get("message") if isinstance(payload, dict) else None
+            detail = f": {message}" if message else ""
+            raise AdriaMachConnectionError(
+                f"RPC {rtype}/{method} returned status {status}{detail}"
+            )
         return data.get("payload")
 
     async def async_get_mach_info(self) -> dict[str, Any]:
