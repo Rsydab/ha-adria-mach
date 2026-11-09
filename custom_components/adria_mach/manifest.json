@@ -18,5 +18,5 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Rsydab/ha-adria-mach/issues",
   "requirements": [],
-  "version": "0.9.2"
+  "version": "0.9.3"
 }

@@ -28,10 +28,12 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from . import AdriaMachConfigEntry
 from .const import (
+    DOMAIN,
     KEY_NOTIFICATION_COUNT,
     KEY_TILT_FRONT_BACK,
     KEY_TILT_SIDE,
@@ -256,8 +258,12 @@ def _unit_and_class(key: str) -> tuple[str | None, SensorDeviceClass | None]:
     return None, None
 
 
-def _generic_description(key: str, value: Any) -> SensorEntityDescription:
-    numeric = isinstance(value, (int, float)) and not isinstance(value, bool)
+def _generic_description(
+    key: str, value: Any, was_numeric: bool = False
+) -> SensorEntityDescription:
+    numeric = (isinstance(value, (int, float)) and not isinstance(value, bool)) or (
+        value is None and was_numeric
+    )
     unit, device_class = _unit_and_class(key) if numeric else (None, None)
     state_class = (
         SensorStateClass.MEASUREMENT
@@ -284,11 +290,22 @@ async def async_setup_entry(
     entities: list[AdriaMachSensor] = [AdriaMachSensor(coordinator, d) for d in SENSORS]
 
     curated = {d.key for d in SENSORS} | COVERED_BY_OTHER_PLATFORMS
+    registry = er.async_get(hass)
+    mach_id = coordinator.api.mach_id
     for key in sorted(coordinator.data or {}):
         if key in curated or _is_sensitive(key):
             continue
+        value = coordinator.data[key]
+        # A value that is momentarily empty at startup (e.g. GPS without a fix)
+        # keeps the numeric kind it had before, so its statistics are not dropped.
+        was_numeric = False
+        if value is None and (
+            entity_id := registry.async_get_entity_id("sensor", DOMAIN, f"{mach_id}_{key}")
+        ):
+            reg_entry = registry.async_get(entity_id)
+            was_numeric = bool(reg_entry and (reg_entry.capabilities or {}).get("state_class"))
         entities.append(
-            AdriaMachSensor(coordinator, _generic_description(key, coordinator.data[key]))
+            AdriaMachSensor(coordinator, _generic_description(key, value, was_numeric))
         )
     async_add_entities(entities)
 
